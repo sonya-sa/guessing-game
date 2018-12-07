@@ -1,9 +1,12 @@
 #create a word guessing game where the user play the "computer"
 #user has a maximum of 6 tries to guess correctly
 import random
+import requests
 
 word_list = ['hello', 'bye']
 #WORD_LINK = 'http://app.linkedin-reach.io/words'
+
+display = []
 
 class Game:
     """Encapsulate rules and logic of word the game"""
@@ -11,20 +14,24 @@ class Game:
     def __init__(self):
         self.word = random.choice(word_list)
         self.max_incorrect_guesses = 6
-        #self.display_spaces = display_spaces()
 
-    # @staticmethod
-    # def get_word(word_list):
-
-    #     word = random.choice(word_list)
-    #     return word
-
+    #function gets word
+    #function displays spaces
+    #function checks letter
+    #function checks word
+    #function checks guesses
+    #function counts guesses
+    #function counts remaining guesses
+    #fuction checks winner
+    #function checks loser
 
 
     # def display_spaces(self):
 
-    #     for letter in len(self.word):
-    #         print('-')
+    #     for letter in range(len(self.word)):
+    #         display[letter] = '_'
+            
 
-game = Game()
-print game
+play = Game()
+
+    
