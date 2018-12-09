@@ -12,13 +12,14 @@
 
   </head>
   <body>
-    <p><strong>Word Guessing-Game</strong></p>
-      <div class="container-top">
-    
-        <!--Select Difficulty -->
+    <p><strong>Word Guessing-Game{{display}}</strong></p>
+
+        <!--Show word spaces -->
+      <!--Select Difficulty -->
+      <div class="container">
         <form action="/select-difficulty">
             Difficulty level:
-            <select name="difficulty">
+            <select id="difficulty">
                 <option value=1>1</option>
                 <option value=2>2</option>
                 <option value=3>3</option>
@@ -33,10 +34,25 @@
              <input type="submit" value="enter">
          </form>
         </div>
-        <div>
+        <br>
 
+        <!-- Show number of incorrect guesses left-->
+        <div class="container">
+            <h6>You have <span id="guesses-left"></span> guesses left.</h6>
+        </div>
+
+
+
+        <!-- Enter Letter -->
+    <div class="container">
+        <form action=
+    </div>
+
+
+    <!--javascript -->
+    <script src="/static/js/game.js"></script>
+    <!-- jquery script -->
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-
   </body>
 </html>

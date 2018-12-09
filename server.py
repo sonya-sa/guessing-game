@@ -2,7 +2,7 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, request, flash, redirect, session
 #from flask_debugtoolbar import DebugToolbarExtension
 
-from word_dict import get_word
+from api import get_word
 import requests
 import random
 
@@ -16,6 +16,9 @@ app.secret_key = "ABC"
 # This is horrible. Fix this so that, instead, it raises an error.
 app.jinja_env.undefined = StrictUndefined
 
+MAX_GUESSES = 6
+INCORRECT_GUESSES = 0
+
 
 @app.route('/')
 def index():
@@ -23,18 +26,38 @@ def index():
 
     return render_template('index.html')
 
+@app.route("/display")
+def display():
+    """Automatically select a word for user to guess and display it."""
+
+    #calls api from api module and starts game at level 1
+    word = get_word(difficulty=1)
+
+    #displays spaces
+    display = len(word) * ' _ '
+
+    return display
+
+
 @app.route("/select-difficulty")
 def word_by_difficulty():
-    """Retrieves difficulty level when user selects a number between 1-10."""
+    """Retrieves word by difficulty level when user selects a level between 1-10."""
 
     difficulty = request.args.get("difficulty")
-    return difficulty
+    word = get_word(difficulty)
+    return word
 
-@app.route("/secret-word")
-def get_secret_word(difficulty):
 
-    secret_word = get_word(difficulty)
-    return render_template(secret_word=secret_word)
+
+
+
+
+
+# @app.route("/secret-word")
+# def get_secret_word(difficulty):
+
+#     secret_word = get_word(difficulty)
+#     return render_template(secret_word=secret_word)
 
   
 
