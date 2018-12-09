@@ -1,83 +1,47 @@
 # # #create a word guessing game where the user play the "computer"
 # # #user has a maximum of 6 tries to guess correctly
 
-# import random
-
-
-
-
-# wordlist = ["hello", "bye"]
-
-# word = random.choice(wordlist).lower()
-
-# display = []
-
-# used = []
-
-# display.extend(word)
-
-# used.extend(display)
-
-# for i in range(len(display)):
-#     display[i] = '_'
-
-# print (' '.join(display))
-# print ()
-
-
-# def main():
-
-#     counter = 0
-
-#     incorrect = 6
-
-#     while counter < len(word) and incorrect > 0 :
-
-#         guess = input("Please enter a letter: ")
-#         guess = guess.lower()
-#         print("Number of incorrect guesses remaining: {} ".format\
-#             (incorrect))
-
-#         # if guess not in used:
-#         #     used.append(guess)
-#         # else:
-#         #     print ("You already guessed that letter. Try again!")
-
-#         for i in range(len(word)):
-
-#             if word[i] == guess and guess not in used:
-
-#                 display[i] = guess
-
-#                 counter = counter + 1
-
-#                 used.remove(guess)
-
-#         if guess not in display:
-
-#             incorrect = incorrect - 1
-#             print ("Sorry, that's incorrect. You have", incorrect, \
-#                 'chances remaining.')
-
-
-#     if counter == len(word):
-#         print ("Congratulations! You found the word.")
-
-#     else:
-#         print ("Game over.")
-
-# main()
-
 import random
+import requests
 #create a function that randomly selects a word
+# def get_word(difficulty):
+#     """Selects a secret word for game."""
+ 
+#     # wordlist = ['hello']
+#     # return random.choice(wordlist).lower()
+#     difficulty = input('Select difficulty. Choose a number between 1-10: ')
+#     return word
+WORD_LINK = 'http://app.linkedin-reach.io/words'
 
-def get_word():
-    wordlist = ['hello']
-    return random.choice(wordlist).lower()
+def get_word(difficulty=1):
+
+    """calls LinkedIn API and creates a dictionary of words by difficulty by calling LinkedIn API"""
+
+    words = {}
+
+    if difficulty not in words:
+        
+        payload = {"difficulty": difficulty}
+
+        #calls API to get list of words at certain difficulty
+        #Returns: <Response [200]>
+        r = requests.get(WORD_LINK,params=payload)
+
+        #binds a list of words to a variable
+        word_list = r.text.split('\n')
+
+        words[difficulty] = word_list
+
+    #get word at difficult level
+    selected = random.choice(words[difficulty])
+
+    return selected
+
 
 #create function that checks word and guess
 #function has 3 paramaters: word selected, guess letter, list of guesses taken
 def check(word, guesses, guess):
+    """Checks guessed letter and shows all correctly guessed letters and remaining spaces."""
     show = ''
     matches = 0
 
@@ -100,8 +64,9 @@ def check(word, guesses, guess):
 
 #main function that runs game
 def main():
+    difficulty = input('Select a difficulty. Choose a number between 1-10: ')
     #call get_word function and assign to word variable
-    word = get_word()
+    word = get_word(difficulty)
     #print(word)
     guesses = []
     guessed = False
@@ -145,7 +110,7 @@ def main():
             print('Invalid entry.')
     
     if incorrect == max_guesses:
-        print ('Sorry! You hit the maximum trys. You lose.')
+        print ('Sorry! You hit the maximum incorrect guesses. You lose.')
     
     else:
         print ('Yes, the word is', word + '. It took you', len(guesses), 'tries.')
