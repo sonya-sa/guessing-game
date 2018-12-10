@@ -31,18 +31,33 @@ def index():
 def start_game():
     """Automatically select a word for user to guess and display it."""
 
+    difficulty = request.args.get("select-difficulty")
     #calls api from api module and starts game at level 1
-    word = get_word(difficulty=1)
+    word = get_word(difficulty)
 
     #create session to keep track of new game
     session['word'] = word
-    session['incorrect_guesses'] = ''
-    session['correct_guesses'] = ''
-    session['num_guesses_left'] = MAX_GUESSES
-    session['guesses'] = ''
-    session['display'] = len(word) * '_'
+    session['all_guesses'] = []
+    # session['incorrect_guesses'] = ''
+    # session['correct_guesses'] = ''
+    # session['num_guesses_left'] = MAX_GUESSES
+    # session['all_guesses'] = ''
+    # session['display'] = len(word) * '_'
 
-    return word
+    return redirect('/game')
+
+@app.route("/game")
+def play_game():
+
+
+    return render_template('temp_doc.html')
+
+@app.route("/display-word")
+def display_word():
+
+    display = len(session['word']) * ' _'
+
+    return display
 
 @app.route("/check-letter")
 def guessed_letter():
@@ -61,9 +76,6 @@ def guessed_word():
     return guessed_word
 
 
-
-
-
 @app.route("/select-difficulty")
 def word_by_difficulty():
     """Retrieves word by difficulty level when user selects a level between 1-10."""
@@ -71,6 +83,10 @@ def word_by_difficulty():
     difficulty = request.args.get("difficulty")
     word = get_word(difficulty)
     return word
+
+# @app.route("/guesses-left")
+# def guesses_left():
+
 
 # @app.route("/check-guess")
 # def check_guess():
@@ -91,7 +107,17 @@ def word_by_difficulty():
 #             for: 
 
 
+# def incorrect_guesses_left(word, guesses):
+    # """Finds the number of incorrect guesses left."""
 
+#     num_wrong = 0
+#     for letter in word:
+#         if letter in word:
+#             pass
+#         else:
+#             num_wrong += 1
+
+#     return num_wrong
 
 
 

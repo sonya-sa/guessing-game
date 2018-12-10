@@ -29,7 +29,8 @@ def check(word, guesses, guess):
 
 #main function that runs game
 def main():
-    #call get_word function and assign to word variable
+
+    #logic for calling linkedin API in api.py
     word = get_word(input('Choose a difficulty level between 1-10: '))
     #print(word)
     guesses = []
@@ -76,7 +77,7 @@ def main():
             print('Invalid entry.')
     
     if incorrect == max_guesses:
-        print ('Sorry! You hit the maximum trys. You lose.')
+        print ('Sorry! You hit the maximum attempts. You lose.')
     
     else:
         print ('Yes, the word is', word + '. It took you', len(guesses), 'tries.')

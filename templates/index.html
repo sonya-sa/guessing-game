@@ -1,39 +1,14 @@
-<!doctype html>
-<html>
-  <head>
-    <title>Word Guessing-Game</title>
+{% extends "base.html" %} 
 
-      <!-- Bootstrap -->
-      <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.4/cyborg/bootstrap.min.css"
-            rel="stylesheet">
-      <!-- Stylesheet -->
-        <link rel="stylesheet" href="/static/css/styles.css">      
-
-
-  </head>
-   <body>
+{% block main %}
         <div class="container">
             <h2><strong>Word Guessing-Game</strong></h2>
 
-        <!--Show word spaces -->
-
-
-        <!-- Show number of incorrect guesses left-->
-        <div class="container">
-            <h6>You have <span id="guesses-left"></span> incorrect guesses left.</h6>
-        </div>
-        <br>
-        <!-- Show all letters guessed -->
-        <div class="container">
-            <h6>You've already guessed the following: <span id="letters-guessed"></span>.</h6>
-        </div>
-        <br>
-
               <!--Select Difficulty -->
       <div class="container">
-        <form action="/select-difficulty">
+        <form action="/start-game">
             Difficulty level:
-            <select id="difficulty">
+            <select id="difficulty" name="select-difficulty">
                 <option value=1>1</option>
                 <option value=2>2</option>
                 <option value=3>3</option>
@@ -45,36 +20,8 @@
                 <option value=9>9</option>
                 <option value=10>10</option>
              </select>
-             <input type="submit" value="Enter">
+             <input type="submit" value="Start Game">
          </form>
         </div>
         <br>
-
-
-
-
-        <!-- Enter Letter -->
-        <div class="container">
-            <form action="/check-letter">
-                Guess a letter: <input type="text" name="guessed-letter" maxlength="1" pattern="[A-Za-z]" size="2" autocomplete="off">
-                <input type="submit" value="Enter">
-            </form>
-        </div>
-        <br>
-        <!-- Enter word -->
-        <div class="container">
-            <form action="/check-word">
-                Guess word: <input type="text" name="guessed-word" pattern="[A-Za-z]" size="10" autocomplete="off">
-                <input type="submit" value="Enter">
-            </form>
-        </div>
-
-
-    <!--javascript -->
-    <script src="/static/js/game.js"></script>
-    
-    <!-- jquery script -->
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-  </body>
-</html>
+{% endblock %}
