@@ -65,6 +65,7 @@ def play_game():
 
     return redirect('/game-status')
 
+
 # @app.route("/display-word")
 # def display_word():
 
