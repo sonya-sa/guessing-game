@@ -1,0 +1,37 @@
+{% extends "base.html" %} 
+
+{% block main %}
+        <!--Show word spaces -->
+
+        <!-- Show number of incorrect guesses left-->
+        <div class="container">
+            <h6>You have <span id="guesses-left"></span> incorrect guesses left.</h6>
+        </div>
+        <br>
+        <!-- Show all letters guessed -->
+        <div class="container">
+            <h6>You've already guessed the following: <span id="letters-guessed"></span>.</h6>
+        </div>
+        <br>
+
+
+        <!-- Enter Letter -->
+        <div class="container">
+            <form action="/game">
+                Guess a letter: <input type="text" name="guessed-letter" maxlength="1" pattern="[A-Za-z]" size="2" autocomplete="off">
+                <input type="submit" value="Enter">
+            </form>
+        </div>
+        <br>
+
+        <!-- Enter word -->
+        <div class="container">
+            <form action="/check-word">
+                Guess word: <input type="text" name="guessed-word" pattern="[A-Za-z]" size="10" autocomplete="off">
+                <input type="submit" value="Enter">
+            </form>
+        </div>
+        <div>
+            <h1>{{session['word']}}</h1>
+        </div>    
+{% endblock %}
