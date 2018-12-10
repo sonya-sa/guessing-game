@@ -1,3 +1,5 @@
 venv
 __pycache__/
 server.pyc
+api.pyc
+word_dict.pyc

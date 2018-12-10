@@ -18,7 +18,7 @@ app.jinja_env.undefined = StrictUndefined
 
 MAX_GUESSES = 6
 INCORRECT_GUESSES = 0
-
+WINNER = False
 
 @app.route('/')
 def index():
@@ -26,17 +26,34 @@ def index():
 
     return render_template('index.html')
 
-@app.route("/display")
-def display():
+@app.route("/start-game")
+def start_game():
     """Automatically select a word for user to guess and display it."""
 
     #calls api from api module and starts game at level 1
     word = get_word(difficulty=1)
 
-    #displays spaces
-    display = len(word) * ' _ '
+    #create session to keep track of new game
+    session['word'] = word
+    session['incorrect_guesses'] = ''
+    session['correct_guesses'] = ''
+    session['num_guesses_left'] = MAX_GUESSES
+    session['guesses'] = ''
+    session['display'] = len(word) * '_'
 
-    return display
+    return word
+
+@app.route("/check-letter")
+def guessed_letter():
+
+    guess = requests.args.get("guessed-letter")
+
+    check_letter(guess)
+
+
+
+
+
 
 
 @app.route("/select-difficulty")
@@ -47,23 +64,29 @@ def word_by_difficulty():
     word = get_word(difficulty)
     return word
 
+@app.route("/check-guess")
+def check_guess():
+    
+
+
+
+#############################################
+def check_letter(guess):
+
+    guessed_letters = []
+
+    while not WINNER and INCORRECT_GUESSES < MAX_GUESSES:
+
+        if guess in guessed_letters:
+
+            result['']
 
 
 
 
 
-
-# @app.route("/secret-word")
-# def get_secret_word(difficulty):
-
-#     secret_word = get_word(difficulty)
-#     return render_template(secret_word=secret_word)
-
-  
-
-if __name__ == "__main__":
-    #set to True for debugging
-    #set to False for production
+if __name__ == "__main__"
+    
     app.debug = True
-
     app.run(host="0.0.0.0")
+  

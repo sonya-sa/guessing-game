@@ -12,10 +12,18 @@
 
   </head>
   <body>
-    <p><strong>Word Guessing-Game{{display}}</strong></p>
+    <p><strong>Word Guessing-Game</strong></p>
 
         <!--Show word spaces -->
-      <!--Select Difficulty -->
+
+
+        <!-- Show number of incorrect guesses left-->
+        <div class="container">
+            <h6>You have <span id="guesses-left"></span> guesses left.</h6>
+        </div>
+        <br>
+
+              <!--Select Difficulty -->
       <div class="container">
         <form action="/select-difficulty">
             Difficulty level:
@@ -31,22 +39,22 @@
                 <option value=9>9</option>
                 <option value=10>10</option>
              </select>
-             <input type="submit" value="enter">
+             <input type="submit" value="Enter">
          </form>
         </div>
         <br>
 
-        <!-- Show number of incorrect guesses left-->
-        <div class="container">
-            <h6>You have <span id="guesses-left"></span> guesses left.</h6>
-        </div>
 
 
 
         <!-- Enter Letter -->
-    <div class="container">
-        <form action=
-    </div>
+        <div class="container">
+            <form action="/check-letter">
+                Guess a letter: <input type="text" name="guessed-letter">
+                <input type="submit" value="Enter">
+
+
+        </div>
 
 
     <!--javascript -->
