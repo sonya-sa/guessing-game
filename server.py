@@ -24,6 +24,7 @@ WINNER = False
 def index():
     """Homepage."""
 
+    #clear.session()
     return render_template('index.html')
 
 @app.route("/start-game")
@@ -46,11 +47,18 @@ def start_game():
 @app.route("/check-letter")
 def guessed_letter():
 
-    guess = requests.args.get("guessed-letter")
+    guessed_letter = request.args.get("guessed-letter").lower()
 
-    check_letter(guess)
+    #check_letter(guessed_letter)
 
+    return guessed_letter
 
+@app.route("/check-word")
+def guessed_word():
+
+    guessed_word = request.args.get("guessed_word").lower()
+    
+    return guessed_word
 
 
 
@@ -64,28 +72,30 @@ def word_by_difficulty():
     word = get_word(difficulty)
     return word
 
-@app.route("/check-guess")
-def check_guess():
+# @app.route("/check-guess")
+# def check_guess():
     
 
 
-
 #############################################
-def check_letter(guess):
+# def check_letter(guessed_letter):
 
-    guessed_letters = []
+#     all_guesses = session['guesses']
 
-    while not WINNER and INCORRECT_GUESSES < MAX_GUESSES:
+#     while not WINNER and INCORRECT_GUESSES < MAX_GUESSES:
 
-        if guess in guessed_letters:
+#         if guessed_letter in all_guesses:
 
-            result['']
+#             flash("You already guessed that! Try again.")
+#         else:
+#             for: 
 
 
 
 
 
-if __name__ == "__main__"
+
+if __name__ == "__main__":
     
     app.debug = True
     app.run(host="0.0.0.0")
