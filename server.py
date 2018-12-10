@@ -44,20 +44,33 @@ def start_game():
     # session['all_guesses'] = ''
     # session['display'] = len(word) * '_'
 
-    return redirect('/game')
+    return redirect('/game-status')
 
-@app.route("/game")
-def play_game():
-
+@app.route("/game-status")
+def render_game_status():
+    """this function renders template"""
 
     return render_template('temp_doc.html')
 
-@app.route("/display-word")
-def display_word():
+@app.route("/guess-letter", methods=['POST'])
+def play_game():
 
-    display = len(session['word']) * ' _'
+    guessed_letter = request.form.get("guess-letter")
 
-    return display
+    all_guesses_list = session['all_guesses']
+
+    all_guesses_list.append(guessed_letter.encode('utf-8'))
+
+    session['all_guesses'] = all_guesses_list
+
+    return redirect('/game-status')
+
+# @app.route("/display-word")
+# def display_word():
+
+#     display = len(session['word']) * ' _'
+
+#     return render_template('temp_doc.html',display=display)
 
 @app.route("/check-letter")
 def guessed_letter():
