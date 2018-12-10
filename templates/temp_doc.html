@@ -17,8 +17,8 @@
 
         <!-- Enter Letter -->
         <div class="container">
-            <form action="/game">
-                Guess a letter: <input type="text" name="guessed-letter" maxlength="1" pattern="[A-Za-z]" size="2" autocomplete="off">
+            <form action="/guess-letter" method='POST'>
+                Guess a letter: <input type="text" name="guess-letter" maxlength="1" pattern="[A-Za-z]" size="2" autocomplete="off">
                 <input type="submit" value="Enter">
             </form>
         </div>
@@ -33,5 +33,12 @@
         </div>
         <div>
             <h1>{{session['word']}}</h1>
-        </div>    
+        </div>
+        <div>
+            <h1>{% for letter in session['all_guesses'] %}
+                <li>{{letter}}</li>
+                {% endfor %}
+            </h1> 
+         </div>
+
 {% endblock %}
