@@ -39,6 +39,7 @@ def start_game():
     session['word'] = word
     session['all_guesses'] = []
     session['show'] = len(word) * ' _'
+    session['guesses_left'] = 6
     # session['incorrect_guesses'] = ''
     # session['correct_guesses'] = ''
     # session['num_guesses_left'] = MAX_GUESSES
@@ -53,20 +54,31 @@ def render_game_status():
     
     display = session['show']
 
-    return render_template('temp_doc.html', display=display)
+    guesses_left = session['guesses_left']
+
+    return render_template('temp_doc.html', display=display, \
+        guesses_left=guesses_left)
 
 @app.route("/guess-letter", methods=['POST'])
 def play_game():
 
     guessed_letter = request.form.get("guess-letter")
 
-    all_guesses_list = session['all_guesses']
+    if guessed_letter in session['all_guesses']:
+        flash('You already guessed that!')
+    else:
+        all_guesses_list = session['all_guesses']
 
-    all_guesses_list.append(guessed_letter.encode('utf-8'))
+        all_guesses_list.append(guessed_letter)
 
     #session['all_guesses'] = all_guesses_list
 
     check_guessed_letter(guessed_letter)
+    guesses_left = incorrect_guesses_left(guessed_letter)
+    
+    # if guesses_left == 0:
+    #     redirect('/')
+
 
     return redirect('/game-status')
 
@@ -152,7 +164,15 @@ def check_winner(display):
         return redirect('/winner')
     else:
         pass
-      
+
+def check_loser(guesses_left):
+
+    if guesses_left == 0:
+        return redirect('/')
+
+
+
+
 # def check_letter(guessed_letter):
 
 #     all_guesses = session['guesses']
@@ -166,17 +186,18 @@ def check_winner(display):
 #             for: 
 
 
-# def incorrect_guesses_left(word, guesses):
-    # """Finds the number of incorrect guesses left."""
+def incorrect_guesses_left(guessed_letter):
+    """Finds the number of incorrect guesses left."""
 
-#     num_wrong = 0
-#     for letter in word:
-#         if letter in word:
-#             pass
-#         else:
-#             num_wrong += 1
+    guesses_left = 6
+    
+    for letter in session['all_guesses']:
+        if letter in session['word']:
+            pass
+        else:
+            guesses_left -= 1
 
-#     return num_wrong
+    session['guesses_left'] = guesses_left
 
 
 

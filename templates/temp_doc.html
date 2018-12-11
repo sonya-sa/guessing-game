@@ -1,16 +1,33 @@
 {% extends "base.html" %} 
 
 {% block main %}
-        <!--Show word spaces -->
+        <!--Display word to guessess -->
+        <div class="container">
+
+        <div>
+            <h1>{{display}}</h1> 
+        </div>
+        <div>
+            <h1>{{guesses_left}}</h1>
+        </div>
+    </div>
 
         <!-- Show number of incorrect guesses left-->
         <div class="container">
             <h6>You have <span id="guesses-left"></span> incorrect guesses left.</h6>
         </div>
         <br>
+
         <!-- Show all letters guessed -->
         <div class="container">
-            <h6>You've already guessed the following: <span id="letters-guessed"></span>.</h6>
+            <h5>You've already guessed the following: <span id="letters-guessed">
+            <p>{% for letter in session['all_guesses'] %}
+                {% if letter not in session['show'] %}
+                <u>{{letter}}</u>
+                {% endif %}
+                {% endfor %}
+            </p> 
+            </span></h5>
         </div>
         <br>
 
@@ -18,7 +35,7 @@
         <!-- Enter Letter -->
         <div class="container">
             <form action="/guess-letter" method='POST'>
-                Guess a letter: <input type="text" name="guess-letter" maxlength="1" pattern="[A-Za-z]" size="2" autocomplete="off">
+                Guess a letter: <input type="text" name="guess-letter" maxlength="1" pattern="[A-Za-z]" size="2" autocomplete="off" required>
                 <input type="submit" value="Enter">
             </form>
         </div>
@@ -27,23 +44,22 @@
         <!-- Enter word -->
         <div class="container">
             <form action="/check-word">
-                Guess word: <input type="text" name="guessed-word" size="10" autocomplete="off">
+                Guess the word: <input type="text" name="guessed-word" size="10" autocomplete="off" required>
                 <input type="submit" value="Enter">
             </form>
         </div>
         <div>
             <h1>{{session['word']}}</h1>
         </div>
-        <div>
-            <h1>{% for letter in session['all_guesses'] %}
-                <li>{{letter}}</li>
+<!--         <div>
+            <p>{% for letter in session['all_guesses'] %}
+                <u>{{letter}}</u>
                 {% endfor %}
-            </h1> 
-         </div>
-            <div>
-            <h1>{{display}}
-            </h1> 
+            </p> 
+         </div> -->
+<!--         <div>
+            <h1>{{display}}</h1> 
         </div>
-
+ -->
 
 {% endblock %}
