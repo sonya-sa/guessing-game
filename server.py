@@ -22,7 +22,9 @@ MAX_GUESSES = 6
 def index():
     """Homepage."""
 
+    #clears session for new game
     session.clear()
+
     return render_template('index.html')
 
 @app.route("/start-game")
@@ -56,10 +58,14 @@ def render_game_status():
 
 @app.route("/guess-letter", methods=['POST'])
 def play_game():
-    """Requests guess from user"""
+    """Performs the main game tasks: checks letters in word, checks for 
+    winner and loser, and updates session."""
 
+    #request letter guessed from temp_doc.html
     guessed_letter = request.form.get("guess-letter")
 
+    #flash message incase user enters a letter already guessed
+    #otherwise, update session with guess
     if guessed_letter in session['all_guesses']:
         flash('You already guessed that!')
     else:
@@ -67,23 +73,33 @@ def play_game():
 
         all_guesses_list.append(guessed_letter)
 
-
+    #calls helper function to check if letter is in word
+    #binds attempts left to varible
     show = check_guessed_letter(guessed_letter)
     
+    #updates session to show letter guessed in word
+    #if letter not in word, space remains hidden
     session['show'] = show
 
+    #calls helper function to update attempts left
+    #binds attempts left to variable
     guesses_left = incorrect_guesses_left(guessed_letter)
 
+    #updates session with guesses remaining
     session['guesses_left'] = guesses_left
 
+    #checks for winner
     winner = check_winner(guesses_left)
 
+    #if winner, takes user to landing page
     if winner:
         message = "Congrats! You won!"
         return render_template('play_again.html', message=message)
     
+    #checks for loser
     loser = check_loser(guesses_left)
 
+    #if loser, takes user to landing page
     if loser:
         message = "Sorry! You ran out of incorrect guesses."
         return render_template('play_again.html', message=message)
@@ -91,42 +107,42 @@ def play_game():
     return redirect('/game-status')
 
 
-# @app.route("/display-word")
-# def display_word():
-
-#     display = len(session['word']) * ' _'
-
-#     return render_template('temp_doc.html',display=display)
-
-# @app.route("/check-letter")
-# def guessed_letter():
-
-#     guessed_letter = request.args.get("guessed-letter").lower()
-
 @app.route("/check-word")
 def guessed_word():
+    """Checks if word entered by user is a match. If word guessed is incorrect,
+    update session with guess and redirect to game board."""
 
+    #request guessed word
     guessed_word = request.args.get("guessed-word").lower()
 
-    if guessed_word == session['word']:
+    #call helper function to see if word is a match
+    is_match = check_guessed_word(guessed_word)
+
+    #if word is a match, render landing page to play again
+    #else, alert incorrect guess and update attempts
+    #check if user ran out of trys by called loser helper function
+    if is_match:
         message = "You guessed the word right! You won!"
         return render_template('play_again.html', message=message)
     else:
-        session['all_guesses'].append(guessed_word)
-        print session['all_guesses']
         flash('Sorry! Incorrect guess.')
+        all_guesses = session['all_guesses'].append(guessed_word)
+        session['guesses_left'] -= 1
+        guesses_left = session['guesses_left']
+        is_loser = check_loser(guesses_left)
 
+    #if is loser, redirect to landing page
+    if is_loser:
+        message = "Sorry! You ran out of incorrect guesses."
+        return render_template('play_again.html', message=message)
+
+    #in all other cases, game continues
     return redirect('/game-status')
 
-# @app.route("/winner")
-# def winner():
-
-#     win_message = "Congrats! You won."
-
-#     return render_template("play_again.html", win_message=win_message)
 
 @app.route("/play-again", methods=['POST'])
 def play_again():
+    """Redirects player from landing page to play again."""
 
     play_again = request.form.get("play-again")
 
@@ -134,29 +150,15 @@ def play_again():
 
     
 
-
-# @app.route("/select-difficulty")
-# def word_by_difficulty():
-#     """Retrieves word by difficulty level when user selects a level between 1-10."""
-
-#     difficulty = request.args.get("difficulty")
-#     word = get_word(difficulty)
-#     return word
-
-# @app.route("/guesses-left")
-# def guesses_left():
-
-
-# @app.route("/check-guess")
-# def check_guess():
-    
-
 #############################################
 # HELPER FUNCTIONS
 
 
 def check_guessed_letter(guessed_letter):
+    """Checks if letter guessed and creates game display."""
 
+    #shows if guessed letter is found is word
+    #hides letters that have not been guessed yet
     show = ''
 
     for letter in session['word']:
@@ -167,43 +169,40 @@ def check_guessed_letter(guessed_letter):
 
     return show
 
+def check_guessed_word(guessed_word):
+    """Checks if guessed word is a match."""
+
+    is_match = False
+
+    if guessed_word == session['word'] and session['guesses_left'] > 0:
+        is_match = True
+    else:
+        is_match = False
+
+    return is_match
+
+
 def check_winner(guesses_left):
+    """Checks if user won."""
 
     winner = False
 
-    if session['word'] == session['show'] and guesses_left > 0:
+    #if word matches all correctly guessed letters and attempts remain
+    if session['word'] == session['show'] and session['guesses_left'] > 0:
         winner = True
 
     return winner
 
 def check_loser(guesses_left):
+    """Checks if user lost."""
 
     loser = False
 
+    #if no attempts remain
     if session['guesses_left'] == 0:
         loser = True
 
     return loser
-
-# def check_loser(guesses_left):
-
-#     if guesses_left == 0:
-#         return redirect('/')
-
-
-
-
-# def check_letter(guessed_letter):
-
-#     all_guesses = session['guesses']
-
-#     while not WINNER and INCORRECT_GUESSES < MAX_GUESSES:
-
-#         if guessed_letter in all_guesses:
-
-#             flash("You already guessed that! Try again.")
-#         else:
-#             for: 
 
 
 def incorrect_guesses_left(guessed_letter):
@@ -211,6 +210,7 @@ def incorrect_guesses_left(guessed_letter):
 
     guesses_left = 6
     
+    #decrements guesses left 
     for letter in session['all_guesses']:
         if letter in session['word']:
             pass

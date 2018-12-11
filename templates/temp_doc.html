@@ -20,15 +20,20 @@
 
         <!-- Show all letters guessed -->
         <div class="container">
-            <h5>You've already guessed the following: <span id="letters-guessed">
-            <p>{% for letter in session['all_guesses'] %}
-                {% if letter not in session['show'] %}
-                <u>{{letter}}</u>
-                {% endif %}
-                {% endfor %}
-            </p> 
-            </span></h5>
-        </div>
+            {% if session['all_guesses']|length > 1 %}
+
+                <h5>You've already guessed the following: 
+                    <span id="letters-guessed">
+                        <p>{% for letter in session['all_guesses'] %}
+                            {% if letter not in session['show'] %}
+                            <u>{{letter}}</u>
+                            {% endif %}
+                            {% endfor %}
+                        </p> 
+                    </span>
+                </h5>
+            {% endif %}
+         </div>
         <br>
 
 

@@ -2,10 +2,12 @@
 
 {% block main %}
         <div class="container">
-            <form action="/play-again" method='POST'>
-            {{message}} Do you want to play again?
-            <input type="button" id="difficulty" name="play-again" value="yes!">
-          </form>
+            <!-- <form>  -->
+<!--               <action="/play-again" method='POST'>
+ -->            {{message}} Do you want to play again?
+            <a type="button" id="difficulty" name="play-again" value="yes!" href='/'>some text</a>
+          <!-- </form> -->
         </div>
+
 
 {% endblock %}
