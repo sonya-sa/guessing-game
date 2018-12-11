@@ -24,7 +24,7 @@ WINNER = False
 def index():
     """Homepage."""
 
-    #clear.session()
+    session.clear()
     return render_template('index.html')
 
 @app.route("/start-game")
@@ -38,6 +38,7 @@ def start_game():
     #create session to keep track of new game
     session['word'] = word
     session['all_guesses'] = []
+    session['show'] = ' '
     # session['incorrect_guesses'] = ''
     # session['correct_guesses'] = ''
     # session['num_guesses_left'] = MAX_GUESSES
@@ -48,9 +49,13 @@ def start_game():
 
 @app.route("/game-status")
 def render_game_status():
-    """this function renders template"""
+    """This function renders template to show the updated game board."""
 
-    return render_template('temp_doc.html')
+    display = session['show']
+
+    check_winner(display)
+
+    return render_template('temp_doc.html', display=display)
 
 @app.route("/guess-letter", methods=['POST'])
 def play_game():
@@ -61,7 +66,9 @@ def play_game():
 
     all_guesses_list.append(guessed_letter.encode('utf-8'))
 
-    session['all_guesses'] = all_guesses_list
+    #session['all_guesses'] = all_guesses_list
+
+    check_guessed_letter(guessed_letter)
 
     return redirect('/game-status')
 
@@ -73,30 +80,49 @@ def play_game():
 
 #     return render_template('temp_doc.html',display=display)
 
-@app.route("/check-letter")
-def guessed_letter():
+# @app.route("/check-letter")
+# def guessed_letter():
 
-    guessed_letter = request.args.get("guessed-letter").lower()
-
-    #check_letter(guessed_letter)
-
-    return guessed_letter
+#     guessed_letter = request.args.get("guessed-letter").lower()
 
 @app.route("/check-word")
 def guessed_word():
 
-    guessed_word = request.args.get("guessed_word").lower()
+    guessed_word = request.args.get("guessed-word").lower()
+
+    if guessed_word == session['word']:
+        return redirect('/winner')
+    else:
+        session['all_guesses'] += guessed_word
+        INCORRECT_GUESSES += 1
+        flash('Sorry! Incorrect guess.')
+
+    return redirect('/game-status')
+
+@app.route("/winner")
+def winner():
+
+    win_message = "Congrats! You won."
+
+    return render_template("play_again.html", win_message=win_message)
+
+@app.route("/play-again")
+def play_again():
+
+    play_again = request.args.get("play-again")
+
+    return redirect("/")
+
     
-    return guessed_word
 
 
-@app.route("/select-difficulty")
-def word_by_difficulty():
-    """Retrieves word by difficulty level when user selects a level between 1-10."""
+# @app.route("/select-difficulty")
+# def word_by_difficulty():
+#     """Retrieves word by difficulty level when user selects a level between 1-10."""
 
-    difficulty = request.args.get("difficulty")
-    word = get_word(difficulty)
-    return word
+#     difficulty = request.args.get("difficulty")
+#     word = get_word(difficulty)
+#     return word
 
 # @app.route("/guesses-left")
 # def guesses_left():
@@ -106,8 +132,29 @@ def word_by_difficulty():
 # def check_guess():
     
 
-
 #############################################
+# HELPER FUNCTIONS
+
+
+def check_guessed_letter(guessed_letter):
+
+    show = ''
+
+    for letter in session['word']:
+        if letter in session['all_guesses']:
+            show += letter
+        else:
+            show += ' _ '
+
+    session['show'] = show
+
+def check_winner(display):
+    
+    if session['word'] == display:
+        return redirect('/winner')
+    else:
+        pass
+      
 # def check_letter(guessed_letter):
 
 #     all_guesses = session['guesses']
