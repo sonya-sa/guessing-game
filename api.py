@@ -25,4 +25,3 @@ def get_word(difficulty=1):
     return word
 
 print get_word(difficulty=1)
-
