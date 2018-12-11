@@ -3,3 +3,4 @@ __pycache__/
 server.pyc
 api.pyc
 word_dict.pyc
+.DS_Store

@@ -1,0 +1,11 @@
+{% extends "base.html" %} 
+
+{% block main %}
+        <div class="container">
+            <form action="/play-again">
+            {{win_message}} Do you want to play again?
+            <input type="button" id="difficulty" name="play-again" value="yes!">
+          </form>
+        </div>
+
+{% endblock %}
