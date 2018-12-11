@@ -27,7 +27,7 @@
         <!-- Enter word -->
         <div class="container">
             <form action="/check-word">
-                Guess word: <input type="text" name="guessed-word" pattern="[A-Za-z]" size="10" autocomplete="off">
+                Guess word: <input type="text" name="guessed-word" size="10" autocomplete="off">
                 <input type="submit" value="Enter">
             </form>
         </div>
@@ -40,5 +40,10 @@
                 {% endfor %}
             </h1> 
          </div>
+            <div>
+            <h1>{{display}}
+            </h1> 
+        </div>
+
 
 {% endblock %}
