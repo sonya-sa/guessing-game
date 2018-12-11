@@ -2,8 +2,8 @@
 
 {% block main %}
         <div class="container">
-            <form action="/play-again">
-            {{win_message}} Do you want to play again?
+            <form action="/play-again" method='POST'>
+            {{message}} Do you want to play again?
             <input type="button" id="difficulty" name="play-again" value="yes!">
           </form>
         </div>

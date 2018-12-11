@@ -17,8 +17,6 @@ app.secret_key = "ABC"
 app.jinja_env.undefined = StrictUndefined
 
 MAX_GUESSES = 6
-INCORRECT_GUESSES = 0
-WINNER = False
 
 @app.route('/')
 def index():
@@ -31,26 +29,23 @@ def index():
 def start_game():
     """User selects a word to start the game."""
 
+    #requests difficult level from user and binds to variable
     difficulty = request.args.get("select-difficulty")
-    #calls api from api module and starts game at level 1
+
+    #calls api from api module
     word = get_word(difficulty)
 
-    #create session to keep track of new game
+    #creates a session to keep track of new game
     session['word'] = word
     session['all_guesses'] = []
     session['show'] = len(word) * ' _'
     session['guesses_left'] = 6
-    # session['incorrect_guesses'] = ''
-    # session['correct_guesses'] = ''
-    # session['num_guesses_left'] = MAX_GUESSES
-    # session['all_guesses'] = ''
-    # session['display'] = len(word) * '_'
 
     return redirect('/game-status')
 
 @app.route("/game-status")
 def render_game_status():
-    """This function renders template to show the updated game board."""
+    """Shows the current status of the game."""
     
     display = session['show']
 
@@ -61,6 +56,7 @@ def render_game_status():
 
 @app.route("/guess-letter", methods=['POST'])
 def play_game():
+    """Requests guess from user"""
 
     guessed_letter = request.form.get("guess-letter")
 
@@ -71,14 +67,26 @@ def play_game():
 
         all_guesses_list.append(guessed_letter)
 
-    #session['all_guesses'] = all_guesses_list
 
-    check_guessed_letter(guessed_letter)
-    guesses_left = incorrect_guesses_left(guessed_letter)
+    show = check_guessed_letter(guessed_letter)
     
-    # if guesses_left == 0:
-    #     redirect('/')
+    session['show'] = show
 
+    guesses_left = incorrect_guesses_left(guessed_letter)
+
+    session['guesses_left'] = guesses_left
+
+    winner = check_winner(guesses_left)
+
+    if winner:
+        message = "Congrats! You won!"
+        return render_template('play_again.html', message=message)
+    
+    loser = check_loser(guesses_left)
+
+    if loser:
+        message = "Sorry! You ran out of incorrect guesses."
+        return render_template('play_again.html', message=message)
 
     return redirect('/game-status')
 
@@ -101,7 +109,8 @@ def guessed_word():
     guessed_word = request.args.get("guessed-word").lower()
 
     if guessed_word == session['word']:
-        return redirect('/winner')
+        message = "You guessed the word right! You won!"
+        return render_template('play_again.html', message=message)
     else:
         session['all_guesses'].append(guessed_word)
         print session['all_guesses']
@@ -109,19 +118,19 @@ def guessed_word():
 
     return redirect('/game-status')
 
-@app.route("/winner")
-def winner():
+# @app.route("/winner")
+# def winner():
 
-    win_message = "Congrats! You won."
+#     win_message = "Congrats! You won."
 
-    return render_template("play_again.html", win_message=win_message)
+#     return render_template("play_again.html", win_message=win_message)
 
-@app.route("/play-again")
+@app.route("/play-again", methods=['POST'])
 def play_again():
 
-    play_again = request.args.get("play-again")
+    play_again = request.form.get("play-again")
 
-    return redirect("/")
+    return redirect('/')
 
     
 
@@ -156,19 +165,30 @@ def check_guessed_letter(guessed_letter):
         else:
             show += ' _ '
 
-    session['show'] = show
+    return show
 
-def check_winner(display):
-    
-    if session['word'] == display:
-        return redirect('/winner')
-    else:
-        pass
+def check_winner(guesses_left):
+
+    winner = False
+
+    if session['word'] == session['show'] and guesses_left > 0:
+        winner = True
+
+    return winner
 
 def check_loser(guesses_left):
 
-    if guesses_left == 0:
-        return redirect('/')
+    loser = False
+
+    if session['guesses_left'] == 0:
+        loser = True
+
+    return loser
+
+# def check_loser(guesses_left):
+
+#     if guesses_left == 0:
+#         return redirect('/')
 
 
 
@@ -197,7 +217,7 @@ def incorrect_guesses_left(guessed_letter):
         else:
             guesses_left -= 1
 
-    session['guesses_left'] = guesses_left
+    return guesses_left
 
 
 
