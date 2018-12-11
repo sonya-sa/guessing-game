@@ -29,7 +29,7 @@ def index():
 
 @app.route("/start-game")
 def start_game():
-    """Automatically select a word for user to guess and display it."""
+    """User selects a word to start the game."""
 
     difficulty = request.args.get("select-difficulty")
     #calls api from api module and starts game at level 1
@@ -38,7 +38,7 @@ def start_game():
     #create session to keep track of new game
     session['word'] = word
     session['all_guesses'] = []
-    session['show'] = ' '
+    session['show'] = len(word) * ' _'
     # session['incorrect_guesses'] = ''
     # session['correct_guesses'] = ''
     # session['num_guesses_left'] = MAX_GUESSES
@@ -50,10 +50,8 @@ def start_game():
 @app.route("/game-status")
 def render_game_status():
     """This function renders template to show the updated game board."""
-
+    
     display = session['show']
-
-    check_winner(display)
 
     return render_template('temp_doc.html', display=display)
 
@@ -93,8 +91,8 @@ def guessed_word():
     if guessed_word == session['word']:
         return redirect('/winner')
     else:
-        session['all_guesses'] += guessed_word
-        INCORRECT_GUESSES += 1
+        session['all_guesses'].append(guessed_word)
+        print session['all_guesses']
         flash('Sorry! Incorrect guess.')
 
     return redirect('/game-status')
