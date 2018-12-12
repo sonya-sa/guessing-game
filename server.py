@@ -74,21 +74,18 @@ def play_game():
         all_guesses_list.append(guessed_letter)
 
     #calls helper function to check if letter is in word
-    #binds attempts left to varible
     show = check_guessed_letter(guessed_letter)
     
     #updates session to show letter guessed in word
-    #if letter not in word, space remains hidden
     session['show'] = show
 
     #calls helper function to update attempts left
-    #binds attempts left to variable
     guesses_left = incorrect_guesses_left(guessed_letter)
 
     #updates session with guesses remaining
     session['guesses_left'] = guesses_left
 
-    #checks for winner
+    #calls helper function and checks for winner
     winner = check_winner(guesses_left)
 
     #if winner, takes user to landing page
@@ -143,8 +140,6 @@ def guessed_word():
 @app.route("/play-again", methods=['POST'])
 def play_again():
     """Redirects player from landing page to play again."""
-
-    play_again = request.form.get("play-again")
 
     return redirect('/')
 
