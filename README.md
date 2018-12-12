@@ -58,5 +58,5 @@ Navigate to 'localhost:5000/' to access Guessing-Game
 
 ## <a name="aboutme"></a>About Me
 Sonya Salimy is a software engineer, interested in the use of science, technology, policy and community engagement to tackle the world's most pressing problems.
-Connect with Sonya on [LinkedIn][http://www.linkedin.com/in/sonya-salimy].
+Connect with Sonya on [LinkedIn](#http://www.linkedin.com/in/sonya-salimy).
 
