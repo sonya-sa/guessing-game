@@ -51,10 +51,10 @@ python game.py
 Navigate to 'localhost:5000/' to access Guessing-Game
 
 ## <a name='version'></a>Version 2.0
-*Create database to store user information and scores
-*Add Javascript and AJAX to increase efficiency 
-*Cache results to avoid multiple API calls
-*Deploy application
+* Create database to store user information and scores
+* Add Javascript and AJAX to increase efficiency 
+* Cache results to avoid multiple API calls
+* Deploy application
 
 ## <a name="aboutme"></a>About Me
 Sonya Salimy is a software engineer, interested in the use of science, technology, policy and community engagement to tackle the world's most pressing problems.
