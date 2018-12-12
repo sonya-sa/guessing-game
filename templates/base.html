@@ -1,24 +1,24 @@
 <!doctype html>
 <html>
   <head>
-    <title>Word Guessing-Game</title>
+    <title>{% block title %}GUESSING GAME{% endblock %}</title>
 
-      <!-- Bootstrap -->
-      <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.4/cyborg/bootstrap.min.css"
-            rel="stylesheet">
-      <!-- Stylesheet -->
-        <link rel="stylesheet" href="/static/css/styles.css">      
+    <!-- Helps browser control dimensions and scaling -->
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
 
+      <!-- Bootstrap stylesheet -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <!-- Link to Stylesheet -->
+        <link rel="stylesheet" href="/static/css/styles.css">
 
-  </head>
-  <body>
-   {% block main  %}
-    {% endblock %} 
-      
-      <script src="/static/js/game.js"></script>
-
-    <!-- jquery script -->
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-     </body> 
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div class ="content">
+           {% block main %}
+           BASE
+            {% endblock %} 
+        </div>
+    </body> 
 </html>

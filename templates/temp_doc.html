@@ -1,35 +1,36 @@
 {% extends "base.html" %} 
 
-{% block main %}
-        <!--Display word to guessess -->
-        <div class="container">
+{% block title %}Guessing-Game{% endblock %}
 
+{% block main %}
+
+        <!--Display word to guessess -->
+    <div class="container">
         <div>
             <h1>{{display}}</h1> 
-        </div>
-        <div>
-            <h1>{{guesses_left}}</h1>
         </div>
     </div>
 
         <!-- Show number of incorrect guesses left-->
         <div class="container">
-            <h6>You have <span id="guesses-left"></span> incorrect guesses left.</h6>
+            <h6>You have <span id="guesses-left"><font size="3" color="red">{{guesses_left}}</font></span> incorrect guesses left.</h6>
         </div>
         <br>
 
         <!-- Show all letters guessed -->
         <div class="container">
-            {% if session['all_guesses']|length > 1 %}
+            {% if session['all_guesses']|length >= 1 %}
 
                 <h5>You've already guessed the following: 
                     <span id="letters-guessed">
+                        <font size="3" color="green">
                         <p>{% for letter in session['all_guesses'] %}
                             {% if letter not in session['show'] %}
                             <u>{{letter}}</u>
                             {% endif %}
                             {% endfor %}
                         </p> 
+                    </font>
                     </span>
                 </h5>
             {% endif %}
@@ -46,6 +47,7 @@
         </div>
         <br>
 
+
         <!-- Enter word -->
         <div class="container">
             <form action="/check-word">
@@ -53,18 +55,6 @@
                 <input type="submit" value="Enter">
             </form>
         </div>
-        <div>
-            <h1>{{session['word']}}</h1>
-        </div>
-<!--         <div>
-            <p>{% for letter in session['all_guesses'] %}
-                <u>{{letter}}</u>
-                {% endfor %}
-            </p> 
-         </div> -->
-<!--         <div>
-            <h1>{{display}}</h1> 
-        </div>
- -->
+
 
 {% endblock %}
