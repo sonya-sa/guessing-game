@@ -28,7 +28,7 @@ Create and activate a virtual environment inside your guessing-game directory:
 
 ```
 virtualenv venv
-source env/bin/activate
+source venv/bin/activate
 ```
 
 Install dependencies:
@@ -42,7 +42,7 @@ Run app:
 ```
 python server.py
 ```
-To run terminal based game:
+To run the terminal-based version of the game:
 
 ```
 python game.py
