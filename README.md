@@ -1,8 +1,8 @@
-#Guessing-Game
+# Guessing-Game
 
 Guessing-Game is a word guessing game, which can be played by a user "against" the computer. This is a game where the secret-keeper (in this case, the computer) thinks of a word, and the guesser (the user) tries to guess it one letter at a time. The guesser has six guesses (incorrect guesses). If the guesser guesses a letter which is part of the word, the secret-keeper will reveal all occurrences of that letter in the word. If the guesser guesses a correct letter such that all letters are now revealed, the game is over and the user has won. The user begins the game by selecting a difficulty from 1-10. A terminal-based game was also created, for which the application was logically modeled after.
 
-#Contents
+# Contents
 
 * [Tech Stack](#technologies)
 * [Installation](#install)
