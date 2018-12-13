@@ -1,10 +1,10 @@
-from unittest import TestCase
+import unittest
 from server import app
 from flask import session
 import server
 
 
-class FlaskTestsBasic(TestCase):
+class FlaskTestsBasic(unittest.TestCase):
     """Flask tests."""
 
     def setUp(self):
@@ -15,6 +15,7 @@ class FlaskTestsBasic(TestCase):
 
         #Show Flask errors that happen during test
         app.config['TESTING'] = True
+
 
     def test_index(self):
         """Test homepage."""
@@ -29,49 +30,38 @@ class FlaskRouteTests(unittest.TestCase):
     """Tests Flask routes"""
 
     def setUp(self):
-       """Stuff to do done before every test."""
+        """Stuff to do done before every test."""
 
+        #Show Flask errors during test.
+        app.config['TESTING'] = True
         #Get the Flask test client.
         self.client = app.test_client()
-        #Show Flask errors during test.git stat
-        app.config['TESTING'] = True
 
-        #set up session with parameters to test
+        # set up session with parameters to test 
         with self.client as c:
             with c.session_transaction() as sess:
                 sess['word'] = 'fun'
                 sess['all_guesses'] = ['a']
                 sess['show'] = 3
-                sess['guess_left'] = 4
+                sess['guesses_left'] = 4
 
     def test_start_game(self):
 
-        result = self.client.get("select-difficulty", query_string={'difficulty': 1}, follow_redirects=True)
+        # changes result to "/start_game as route, and changed difficulty to select-difficulty, 
+        # added follow_redirct = True
+        result = self.client.get("/start-game", query_string={'select-difficulty': 1}, follow_redirects=True)
         self.assertIn('_', result.data)
         self.assertEqual(200, result.status_code)
         self.assertTrue('intex.html')
         self.assertIsInstance(result.data, str)
 
-        #test checks guesses left on page, can do the same with 3 ""
+        # added a test to check guesses left on page, can do the same with 3 '__' 
+        # can come up with som
         self.assertTrue(4, result.data) 
 
 
     def test_render_game_status(self):
         pass
-
-    
-    # def test_play_game(self):
-
-    #     """Test "/guess-letter" route."""
-
-    #     #tests post method
-    #     result = self.client.post("/login")
-
-    # def test_guessed_word(self):
-    #     pass
-
-    # def test_play_again(self):
-    #     pass
 
 
 class FlaskRouteGuess(unittest.TestCase):
@@ -90,17 +80,45 @@ class FlaskRouteGuess(unittest.TestCase):
         with self.client as c:
             with c.session_transaction() as sess:
                 sess['word'] = 'fun'
-                sess['all_guesses'] = ['a', 'u', 'f']
-                sess['show'] = " f u _"
-                sess['guesses_left'] = 4
+                sess['all_guesses'] = ['a', 'u', 'f', 'h', 'i', 'p']
+                sess['show'] = "fu _"
+                sess['guesses_left'] = 2
 
 
     def test_win(self):
-        result = self.client.get("/game-status", data = {'guess-letter': 'u'}, follow_redirects=True)
+        result = self.client.post("/guess-letter", data = {'guess-letter': 'n'})
         self.assertIn("Congrats! You won!", result.data)
 
+    def test_lose(self):
+        result = self.client.post("/guess-letter", data = {'guess-letter': 'o'})
+        result = self.client.post("/guess-letter", data = {'guess-letter': 'l'})
+        self.assertIn("Sorry! You ran out of incorrect guesses.", result.data)
 
-if __name__ == "__main__":pyth
+    def test_wrong(self):
+        result = self.client.post("/guess-letter", data = {'guess-letter': 'o'}, follow_redirects=True)
+        self.assertIn('<span id="guesses-left">1</span> incorrect guesses left.', result.data)
+
+
+
+
+    
+    # def test_play_game(self):
+
+    #     """Test "/guess-letter" route."""
+
+    #     #tests post method
+    #     result = self.client.post("/login")
+
+    # def test_guessed_word(self):
+    #     pass
+
+    # def test_play_again(self):
+    #     pass
+
+
+
+
+if __name__ == "__main__":
     
     import unittest
 

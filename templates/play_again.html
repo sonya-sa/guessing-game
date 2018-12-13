@@ -4,7 +4,8 @@
 {% block main %}
         <div class="container">
 
-            {{message}} Do you want to play again?
+            {{message}} The word was: <b>{{session['word']}}</b>. 
+            Do you want to play again?
             <a class="button" name="play-again" href='/'>Yes!</a>
 
         </div>
