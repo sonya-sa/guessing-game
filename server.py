@@ -193,7 +193,7 @@ def check_loser(guesses_left):
 
     loser = False
 
-    #if no attempts remain
+    #if no attempts remaining, user lost
     if session['guesses_left'] == 0:
         loser = True
 
@@ -205,7 +205,7 @@ def incorrect_guesses_left(guessed_letter):
 
     guesses_left = 6
     
-    #decrements guesses left 
+    #decrements guesses left when letter guessed not in word 
     for letter in session['all_guesses']:
         if letter in session['word']:
             pass

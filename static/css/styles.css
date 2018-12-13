@@ -1,6 +1,8 @@
 body {
   background-color: #fcfeff;
-  font-family: "monospace";git
+  font-family: "monospace";
+  display: block;
+  margin: 3;
 }
 
 .button {
@@ -19,8 +21,8 @@ body {
   color: red;
 }
 
-.content {
-  font: "monospace";
-  max-width: 500px;
-  margin: auto;
+
+.container {
+  text-align: center;
+  display: inline-block;
 }
