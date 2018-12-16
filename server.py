@@ -104,20 +104,19 @@ def play_game():
     return redirect('/game-status')
 
 
-@app.route("/check-word")
+@app.route("/check-word", methods =['POST'])
 def guessed_word():
     """Checks if word entered by user is a match. If word guessed is incorrect,
     update session with guess and redirect to game board."""
 
     #request guessed word
-    guessed_word = request.args.get("guessed-word").lower()
+    guessed_word = request.form.get("guessed-word").lower()
 
     #call helper function to see if word is a match
     is_match = check_guessed_word(guessed_word)
 
     #if word is a match, render landing page to play again
     #else, alert incorrect guess and update attempts
-    #check if user ran out of trys by called loser helper function
     if is_match:
         message = "You guessed the word right! You won!"
         return render_template('play_again.html', message=message)
@@ -126,7 +125,9 @@ def guessed_word():
         all_guesses = session['all_guesses'].append(guessed_word)
         session['guesses_left'] -= 1
         guesses_left = session['guesses_left']
-        is_loser = check_loser(guesses_left)
+    
+    #checks if user ran out of trys after incorrectly guessed word
+    is_loser = check_loser(guesses_left)
 
     #if is loser, redirect to landing page
     if is_loser:
