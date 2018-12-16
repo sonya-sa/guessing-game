@@ -43,7 +43,7 @@ class FlaskRouteTests(unittest.TestCase):
                 sess['word'] = 'fun'
                 sess['all_guesses'] = ['a']
                 sess['show'] = 3
-                sess['guesses_left'] = 4
+                sess['guesses_left'] = 5
 
     def test_start_game(self):
 
@@ -95,8 +95,13 @@ class FlaskRouteGuess(unittest.TestCase):
         self.assertIn("Sorry! You ran out of incorrect guesses.", result.data)
 
     def test_wrong(self):
-        result = self.client.post("/guess-letter", data = {'guess-letter': 'o'}, follow_redirects=True)
-        self.assertIn('<span id="guesses-left">1</span> incorrect guesses left.', result.data)
+        result = self.client.post("/guess-letter", data = {'guess-letter': 'o'},\
+         follow_redirects=True)
+        self.assertIn('<h6>You have <span id="guesses-left"><font size="3" color="red">1</font></span> incorrect guesses left.</h6>', result.data)
+
+    def test_word_is_match(self):
+        result = self.client.post("/check-word", data = {'guessed-word': 'fun'})
+        self.assertIn("You guessed the word right! You won!", result.data)
 
 
 
