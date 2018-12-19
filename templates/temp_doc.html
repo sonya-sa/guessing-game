@@ -7,7 +7,8 @@
         <!--Display word to guessess -->
     <div class="container">
         <div>
-            <h1>{{display}}</h1> 
+            <h1>{{display}}</h1>
+            <h2>{{session['word']}}</h2> 
         </div>
     </div>
     <br>
@@ -51,7 +52,7 @@
 
     <!-- Enter word -->
     <div class="container">
-        <form action="/check-word">
+        <form action="/check-word" method='POST'>
             Guess the word: <input type="text" name="guessed-word" size="10" autocomplete="off" required>
             <input type="submit" value="Enter">
         </form>

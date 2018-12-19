@@ -2,7 +2,7 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, request, flash, redirect, session
 #from flask_debugtoolbar import DebugToolbarExtension
 
-from api import get_word
+from api import get_word, word_dict
 import requests
 import random
 
@@ -42,6 +42,7 @@ def start_game():
     session['all_guesses'] = []
     session['show'] = len(word) * ' _'
     session['guesses_left'] = 6
+    session['difficulty'] = difficulty
 
     return redirect('/game-status')
 
@@ -91,7 +92,14 @@ def play_game():
     #if winner, takes user to landing page
     if winner:
         message = "Congrats! You won!"
-        return render_template('play_again.html', message=message)
+        #updates word_dict in api.py 
+        #keeps track of num ppl who won at that difficulty level
+        difficulty = session['difficulty']
+        word_dict[difficulty]['num_win_at_diff'] += 1
+        num_win_at_diff = word_dict[difficulty]['num_win_at_diff']
+        num_selected_diff = word_dict[difficulty]['num_diff_selected']
+        return render_template('play_again.html', message=message, num_win_at_diff=num_win_at_diff, \
+            num_selected_diff=num_selected_diff)
     
     #checks for loser
     loser = check_loser(guesses_left)
@@ -99,7 +107,11 @@ def play_game():
     #if loser, takes user to landing page
     if loser:
         message = "Sorry! You ran out of incorrect guesses."
-        return render_template('play_again.html', message=message)
+        difficulty = session['difficulty']
+        num_win_at_diff = word_dict[difficulty]['num_win_at_diff']
+        num_selected_diff = word_dict[difficulty]['num_diff_selected']
+        return render_template('play_again.html', message=message, num_win_at_diff=num_win_at_diff,\
+            num_selected_diff=num_selected_diff)
 
     return redirect('/game-status')
 
@@ -119,7 +131,12 @@ def guessed_word():
     #else, alert incorrect guess and update attempts
     if is_match:
         message = "You guessed the word right! You won!"
-        return render_template('play_again.html', message=message)
+        difficulty = session['difficulty']
+        word_dict[difficulty]['num_win_at_diff'] += 1
+        num_win_at_diff = word_dict[difficulty]['num_win_at_diff']
+        num_selected_diff = word_dict[difficulty]['num_diff_selected']
+        return render_template('play_again.html', message=message, num_win_at_diff=num_win_at_diff, \
+            num_selected_diff=num_selected_diff)
     else:
         flash('Sorry! Incorrect guess.')
         all_guesses = session['all_guesses'].append(guessed_word)
@@ -132,7 +149,11 @@ def guessed_word():
     #if is loser, redirect to landing page
     if is_loser:
         message = "Sorry! You ran out of incorrect guesses."
-        return render_template('play_again.html', message=message)
+        difficulty = session['difficulty']
+        num_win_at_diff = word_dict[difficulty]['num_win_at_diff']
+        num_selected_diff = word_dict[difficulty]['num_diff_selected']
+        return render_template('play_again.html', message=message, num_win_at_diff=num_win_at_diff, \
+            num_selected_diff=num_selected_diff)
 
     #in all other cases, game continues
     return redirect('/game-status')

@@ -7,11 +7,24 @@
     <!-- Displays winner/loser message and asks to play again -->
     <div class="container">
 
-        {{message}} The word was: <b>{{session['word']}}</b>. 
+        {{message}} The word was: <b>{{session['word']}}</b>.
         Do you want to play again? 
         <a class="button" name="play-again" href='/'>Yes!</a>
 
     </div>
+
+    <!-- Give stats on game before player selects-->
+        <div class="container">
+            <h4> There have been <b>{{num_win_at_diff}}</b> player(s) who won at difficulty <b>level {{session['difficulty']}}</b>.
+            </h4>
+        </div>
+
+    <!-- Give stats on how many people selected that level -->
+        <div class="container">
+            <h4> There have been <b>{{num_selected_diff}}</b> player(s) who have selected difficulty <b>level {{session['difficulty']}}</b></h4>
+        </div>
+
+
 
 
 {% endblock %}
