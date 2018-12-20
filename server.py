@@ -71,7 +71,6 @@ def play_game():
         flash('You already guessed that!')
     else:
         all_guesses_list = session['all_guesses']
-
         all_guesses_list.append(guessed_letter)
 
     #calls helper function to check if letter is in word
@@ -125,11 +124,11 @@ def guessed_word():
     guessed_word = request.form.get("guessed-word").lower()
 
     #call helper function to see if word is a match
-    is_match = check_guessed_word(guessed_word)
+    winner = check_winner(guessed_word)
 
     #if word is a match, render landing page to play again
     #else, alert incorrect guess and update attempts
-    if is_match:
+    if winner:
         message = "You guessed the word right! You won!"
         difficulty = session['difficulty']
         word_dict[difficulty]['num_win_at_diff'] += 1
@@ -144,10 +143,10 @@ def guessed_word():
         guesses_left = session['guesses_left']
     
     #checks if user ran out of trys after incorrectly guessed word
-    is_loser = check_loser(guesses_left)
+    loser = check_loser(guesses_left)
 
     #if is loser, redirect to landing page
-    if is_loser:
+    if loser:
         message = "Sorry! You ran out of incorrect guesses."
         difficulty = session['difficulty']
         num_win_at_diff = word_dict[difficulty]['num_win_at_diff']
@@ -186,26 +185,28 @@ def check_guessed_letter(guessed_letter):
 
     return show
 
-def check_guessed_word(guessed_word):
-    """Checks if guessed word is a match."""
+# def check_guessed_word(guessed_word):
+#     """Checks if guessed word is a match."""
 
-    is_match = False
+#     is_match = False
 
-    if guessed_word == session['word'] and session['guesses_left'] > 0:
-        is_match = True
-    else:
-        is_match = False
+#     if guessed_word == session['word'] and session['guesses_left'] > 0:
+#         is_match = True
+#     else:
+#         is_match = False
 
-    return is_match
+#     return is_match
 
 
-def check_winner(guesses_left):
+def check_winner(guess):
     """Checks if user won."""
 
     winner = False
 
     #if word matches all correctly guessed letters and attempts remain
     if session['word'] == session['show'] and session['guesses_left'] > 0:
+        winner = True
+    elif guess == session['word'] and session['guesses_left'] > 0:
         winner = True
 
     return winner
