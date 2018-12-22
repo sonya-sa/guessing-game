@@ -206,6 +206,7 @@ def check_winner(guess):
     #if word matches all correctly guessed letters and attempts remain
     if session['word'] == session['show'] and session['guesses_left'] > 0:
         winner = True
+    #guess is guessed_word in check-word route
     elif guess == session['word'] and session['guesses_left'] > 0:
         winner = True
 
