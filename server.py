@@ -59,7 +59,7 @@ def render_game_status():
 
 @app.route("/guess-letter", methods=['POST'])
 def play_game():
-    """Performs the main game tasks: checks letters in word, checks for 
+    """Handles guessed letters. Performs the main game tasks: checks letters in word, checks for 
     winner and loser, and updates session."""
 
     #request letter guessed from temp_doc.html
@@ -117,8 +117,8 @@ def play_game():
 
 @app.route("/check-word", methods =['POST'])
 def guessed_word():
-    """Checks if word entered by user is a match. If word guessed is incorrect,
-    update session with guess and redirect to game board."""
+    """Handles guessed words. Performs the main game tasks: checks letters in word, checks for 
+    winner and loser, and updates session."""
 
     #request guessed word
     guessed_word = request.form.get("guessed-word").lower()
