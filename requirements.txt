@@ -15,4 +15,4 @@ testcase==0.1.0
 traceback2==1.4.0
 unittest2==1.1.0
 urllib3==1.24.1
-Werkzeug==0.14.1
+Werkzeug==0.15.3
